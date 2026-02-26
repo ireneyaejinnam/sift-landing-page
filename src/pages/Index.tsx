@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import AppMockup from "@/components/AppMockup";
 import HowItWorks from "@/components/HowItWorks";
 import SocialProof from "@/components/SocialProof";
 import FAQ from "@/components/FAQ";
@@ -15,6 +16,7 @@ const Index = () => {
     <div ref={revealRef} className="min-h-screen">
       <Navbar />
       <Hero />
+      <AppMockup />
       <HowItWorks />
       <SocialProof />
       <FAQ />
