@@ -18,75 +18,127 @@ const steps = [
   },
 ];
 
-const cards = [
+const recommendations = [
   {
     category: "Art",
     title: "Kehinde Wiley: New Portraits",
     details: "Sean Kelly Gallery · Free · Chelsea",
-    match: "Matched because: you liked immersive art + you're free Saturday + it's 12 min from you",
+    time: "Sat 11am–6pm",
     badge: "Ends in 17 days",
-    borderColor: "border-l-primary",
+    accentClass: "bg-primary",
   },
   {
     category: "Outdoors",
     title: "Spring Foraging Walk",
     details: "Prospect Park · Free · Brooklyn",
-    match: "Matched because: you picked outdoors + Saturday morning + it's in your neighborhood",
+    time: "Sat 9:30am",
     badge: "This Saturday",
-    borderColor: "border-l-accent",
+    accentClass: "bg-accent",
   },
   {
     category: "Comedy",
     title: "Late-Night Comedy Lottery",
     details: "Eastville Comedy Club · $10 · East Village",
-    match: "Matched because: you liked comedy + you're free Friday + under your $20 budget",
+    time: "Fri 10:30pm",
     badge: null,
-    borderColor: "border-l-primary",
+    accentClass: "bg-primary",
   },
 ];
 
 const HowItWorks = () => {
   return (
     <section className="px-6 py-24 md:py-32">
-      <div className="mx-auto max-w-[720px]">
-        <h2 className="fade-up font-serif text-2xl font-bold text-foreground md:text-3xl">
+      <div className="mx-auto max-w-5xl">
+        <h2 className="fade-up font-serif text-2xl font-bold text-foreground md:text-3xl max-w-[720px]">
           Three filters. Five recommendations. Zero rabbit holes.
         </h2>
 
-        <div className="mt-12 space-y-8">
-          {steps.map((step, i) => (
-            <div key={step.number} className={`fade-up fade-up-delay-${i + 1}`}>
-              <div className="flex items-start gap-4">
-                <span className="mt-0.5 font-serif text-sm font-bold text-primary">{step.number}</span>
-                <div>
-                  <h3 className="font-serif text-lg font-bold text-foreground">{step.title}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-secondary">{step.description}</p>
+        <div className="mt-16 flex flex-col items-center gap-12 md:flex-row md:items-start md:gap-16">
+          {/* Steps */}
+          <div className="w-full space-y-8 md:w-1/2">
+            {steps.map((step, i) => (
+              <div key={step.number} className={`fade-up fade-up-delay-${i + 1}`}>
+                <div className="flex items-start gap-4">
+                  <span className="mt-0.5 font-serif text-sm font-bold text-primary">{step.number}</span>
+                  <div>
+                    <h3 className="font-serif text-lg font-bold text-foreground">{step.title}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-secondary">{step.description}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Phone mockup */}
+          <div className="fade-up fade-up-delay-2 w-full max-w-[280px] md:w-1/2 md:max-w-[300px]">
+            <div className="rounded-[2.5rem] border-[6px] border-foreground/15 bg-card p-1 shadow-2xl shadow-foreground/10">
+              <div className="rounded-[2rem] bg-background overflow-hidden">
+                {/* Status bar */}
+                <div className="flex items-center justify-between px-6 pt-4 pb-2">
+                  <span className="text-[10px] font-medium text-secondary">9:41</span>
+                  <div className="flex gap-1">
+                    <div className="h-2 w-2 rounded-full bg-secondary/40" />
+                    <div className="h-2 w-2 rounded-full bg-secondary/40" />
+                    <div className="h-2 w-2 rounded-full bg-secondary/40" />
+                  </div>
+                </div>
+
+                {/* App header */}
+                <div className="px-5 pt-2 pb-3">
+                  <span className="font-serif italic text-lg text-foreground">Sift</span>
+                  <p className="mt-1 text-[11px] text-secondary">Your weekend · 3 picks</p>
+                </div>
+
+                {/* Filter pills */}
+                <div className="flex gap-2 px-5 pb-4 overflow-hidden">
+                  <span className="shrink-0 rounded-full bg-primary px-3 py-1 text-[10px] font-medium text-primary-foreground">
+                    This weekend
+                  </span>
+                  <span className="shrink-0 rounded-full bg-accent/20 px-3 py-1 text-[10px] font-medium text-accent">
+                    Under $20
+                  </span>
+                  <span className="shrink-0 rounded-full bg-muted px-3 py-1 text-[10px] font-medium text-secondary">
+                    &lt; 30 min
+                  </span>
+                </div>
+
+                {/* Recommendation cards */}
+                <div className="space-y-3 px-5 pb-6">
+                  {recommendations.map((rec) => (
+                    <div
+                      key={rec.title}
+                      className="flex gap-3 rounded-xl border border-border bg-card p-3.5"
+                    >
+                      <div className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${rec.accentClass}`} />
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-medium text-accent uppercase tracking-wider">
+                            {rec.category}
+                          </span>
+                          {rec.badge && (
+                            <span className="text-[9px] text-primary font-medium">{rec.badge}</span>
+                          )}
+                        </div>
+                        <p className="mt-0.5 font-serif text-[13px] font-bold text-card-foreground leading-tight">
+                          {rec.title}
+                        </p>
+                        <p className="mt-1 text-[11px] text-secondary leading-snug">{rec.details}</p>
+                        <p className="mt-0.5 text-[10px] text-secondary/70">{rec.time}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Bottom bar */}
+                <div className="border-t border-border px-8 py-3 flex justify-around">
+                  <div className="h-1 w-8 rounded-full bg-primary" />
+                  <div className="h-1 w-8 rounded-full bg-border" />
+                  <div className="h-1 w-8 rounded-full bg-border" />
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="mx-auto mt-16 grid max-w-5xl gap-6 md:grid-cols-3">
-        {cards.map((card, i) => (
-          <div
-            key={card.title}
-            className={`fade-up fade-up-delay-${i + 1} rounded-lg border border-border ${card.borderColor} border-l-4 bg-card p-5 shadow-sm`}
-          >
-            <Badge className="mb-3 bg-accent text-accent-foreground hover:bg-accent/90 text-xs">
-              {card.category}
-            </Badge>
-            <h3 className="font-serif text-base font-bold text-card-foreground">{card.title}</h3>
-            <p className="mt-1 text-sm text-secondary">{card.details}</p>
-            <p className="mt-3 text-xs italic leading-relaxed text-primary">{card.match}</p>
-            {card.badge && (
-              <Badge variant="outline" className="mt-3 border-accent text-accent text-xs">
-                {card.badge}
-              </Badge>
-            )}
           </div>
-        ))}
+        </div>
       </div>
     </section>
   );
