@@ -88,7 +88,7 @@ const HowItWorks = () => {
           Three filters. Five recommendations. Zero rabbit holes.
         </h2>
 
-        <div className="mt-16 flex flex-col items-center gap-12 md:flex-row md:items-center md:justify-between md:gap-12">
+        <div className="mt-16 mx-auto flex flex-col items-center gap-12 md:flex-row md:items-center md:justify-center md:gap-6">
           {/* Steps */}
           <div className="w-full max-w-md space-y-8">
             {steps.map((step, i) => (
@@ -244,12 +244,6 @@ const HowItWorks = () => {
                   </div>
                 </div>
 
-                {/* Bottom bar */}
-                <div className="border-t border-border px-6 py-2 flex justify-around">
-                  <div className="h-0.5 w-6 rounded-full bg-primary" />
-                  <div className="h-0.5 w-6 rounded-full bg-border" />
-                  <div className="h-0.5 w-6 rounded-full bg-border" />
-                </div>
 
                 {/* Home indicator */}
                 <div className="flex justify-center pb-1.5">
