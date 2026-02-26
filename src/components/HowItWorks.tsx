@@ -88,9 +88,9 @@ const HowItWorks = () => {
           Three filters. Five recommendations. Zero rabbit holes.
         </h2>
 
-        <div className="mt-16 flex flex-col items-center gap-12 md:flex-row md:items-start md:gap-16">
+        <div className="mt-16 flex flex-col items-center gap-12 md:flex-row md:items-center md:justify-between md:gap-12">
           {/* Steps */}
-          <div className="w-full space-y-8 md:w-1/2">
+          <div className="w-full max-w-md space-y-8">
             {steps.map((step, i) => (
               <div key={step.number} className={`fade-up fade-up-delay-${i + 1}`}>
                 <div className="flex items-start gap-4">
