@@ -47,7 +47,7 @@ const cards = [
 
 const HowItWorks = () => {
   return (
-    <section className="px-6 py-16 md:py-24">
+    <section className="px-6 py-24 md:py-32">
       <div className="mx-auto max-w-[720px]">
         <h2 className="fade-up font-serif text-2xl font-bold text-foreground md:text-3xl">
           Three filters. Five recommendations. Zero rabbit holes.
