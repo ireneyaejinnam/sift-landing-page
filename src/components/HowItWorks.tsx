@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import prospectParkImg from "@/assets/prospect-park.png";
 
 const steps = [
   {
@@ -65,9 +66,8 @@ const HowItWorks = () => {
     setView("list");
     const t1 = setTimeout(() => setView("tapping"), 2400);
     const t2 = setTimeout(() => setView("detail"), 2900);
-    const t3 = setTimeout(() => setView("detail"), 6400);
-    const t4 = setTimeout(() => setView("list"), 6900);
-    return [t1, t2, t3, t4];
+    const t3 = setTimeout(() => setView("list"), 6900);
+    return [t1, t2, t3];
   }, []);
 
   useEffect(() => {
@@ -104,19 +104,17 @@ const HowItWorks = () => {
             ))}
           </div>
 
-          {/* iPhone mockup */}
-          <div className="fade-up fade-up-delay-2 w-full max-w-[280px] md:w-1/2 md:max-w-[300px] animate-float">
-            {/* iPhone frame - black bezel */}
-            <div className="rounded-[3rem] bg-foreground p-[10px] shadow-2xl shadow-foreground/20">
-              {/* Dynamic Island / notch area */}
-              <div className="relative rounded-[2.25rem] bg-background overflow-hidden">
+          {/* iPhone mockup — 19.5:9 aspect ratio */}
+          <div className="fade-up fade-up-delay-2 w-[240px] shrink-0">
+            <div className="rounded-[2.5rem] bg-foreground p-[8px] shadow-2xl shadow-foreground/20">
+              <div className="relative rounded-[2rem] bg-background overflow-hidden">
                 {/* Dynamic Island */}
-                <div className="flex justify-center pt-3 pb-1">
-                  <div className="h-[22px] w-[90px] rounded-full bg-foreground" />
+                <div className="flex justify-center pt-2.5 pb-1">
+                  <div className="h-[18px] w-[76px] rounded-full bg-foreground" />
                 </div>
 
-                {/* Screen content with transitions */}
-                <div className="relative min-h-[420px]">
+                {/* Screen content */}
+                <div className="relative" style={{ minHeight: "460px" }}>
                   {/* List view */}
                   <div
                     className="absolute inset-0 transition-all duration-500 ease-out"
@@ -126,51 +124,48 @@ const HowItWorks = () => {
                       pointerEvents: view === "detail" ? "none" : "auto",
                     }}
                   >
-                    {/* App header */}
-                    <div className="px-5 pt-2 pb-3">
-                      <span className="font-serif italic text-lg text-foreground">Sift</span>
-                      <p className="mt-1 text-[11px] text-secondary">Your weekend · 3 picks</p>
+                    <div className="px-4 pt-2 pb-2">
+                      <span className="font-serif italic text-base text-foreground">Sift</span>
+                      <p className="mt-0.5 text-[10px] text-secondary">Your weekend · 3 picks</p>
                     </div>
 
-                    {/* Filter pills */}
-                    <div className="flex gap-2 px-5 pb-4 overflow-hidden">
-                      <span className="shrink-0 rounded-full bg-primary px-3 py-1 text-[10px] font-medium text-primary-foreground">
+                    <div className="flex gap-1.5 px-4 pb-3 overflow-hidden">
+                      <span className="shrink-0 rounded-full bg-primary px-2.5 py-0.5 text-[9px] font-medium text-primary-foreground">
                         This weekend
                       </span>
-                      <span className="shrink-0 rounded-full bg-accent/20 px-3 py-1 text-[10px] font-medium text-accent">
+                      <span className="shrink-0 rounded-full bg-accent/20 px-2.5 py-0.5 text-[9px] font-medium text-accent">
                         Under $20
                       </span>
-                      <span className="shrink-0 rounded-full bg-muted px-3 py-1 text-[10px] font-medium text-secondary">
+                      <span className="shrink-0 rounded-full bg-muted px-2.5 py-0.5 text-[9px] font-medium text-secondary">
                         &lt; 30 min
                       </span>
                     </div>
 
-                    {/* Recommendation cards */}
-                    <div className="space-y-3 px-5 pb-6">
+                    <div className="space-y-2.5 px-4 pb-4">
                       {recommendations.map((rec, i) => (
                         <div
                           key={rec.title}
-                          className="flex gap-3 rounded-xl border border-border bg-card p-3.5 transition-all duration-200"
+                          className="flex gap-2.5 rounded-xl border border-border bg-card p-3 transition-all duration-200"
                           style={{
                             transform: view === "tapping" && i === 1 ? "scale(0.97)" : "scale(1)",
                             boxShadow: view === "tapping" && i === 1 ? "0 0 0 2px hsl(var(--primary) / 0.3)" : "none",
                           }}
                         >
-                          <div className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${rec.accentClass}`} />
+                          <div className={`mt-1 h-1.5 w-1.5 shrink-0 rounded-full ${rec.accentClass}`} />
                           <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                              <span className="text-[10px] font-medium text-accent uppercase tracking-wider">
+                            <div className="flex items-center gap-1.5">
+                              <span className="text-[9px] font-medium text-accent uppercase tracking-wider">
                                 {rec.category}
                               </span>
                               {rec.badge && (
-                                <span className="text-[9px] text-primary font-medium">{rec.badge}</span>
+                                <span className="text-[8px] text-primary font-medium">{rec.badge}</span>
                               )}
                             </div>
-                            <p className="mt-0.5 font-serif text-[13px] font-bold text-card-foreground leading-tight">
+                            <p className="mt-0.5 font-serif text-[12px] font-bold text-card-foreground leading-tight">
                               {rec.title}
                             </p>
-                            <p className="mt-1 text-[11px] text-secondary leading-snug">{rec.details}</p>
-                            <p className="mt-0.5 text-[10px] text-secondary/70">{rec.time}</p>
+                            <p className="mt-0.5 text-[10px] text-secondary leading-snug">{rec.details}</p>
+                            <p className="mt-0.5 text-[9px] text-secondary/70">{rec.time}</p>
                           </div>
                         </div>
                       ))}
@@ -186,69 +181,63 @@ const HowItWorks = () => {
                       pointerEvents: view === "detail" ? "auto" : "none",
                     }}
                   >
-                    {/* Detail header with back arrow */}
-                    <div className="flex items-center gap-2 px-5 pt-2 pb-3">
-                      <svg className="h-4 w-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <div className="flex items-center gap-2 px-4 pt-2 pb-2">
+                      <svg className="h-3.5 w-3.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                       </svg>
-                      <span className="font-serif italic text-lg text-foreground">Sift</span>
+                      <span className="font-serif italic text-base text-foreground">Sift</span>
                     </div>
 
-                    {/* Hero image placeholder — styled gradient */}
-                    <div className="mx-5 h-36 rounded-xl bg-gradient-to-br from-accent/30 via-primary/20 to-accent/10 flex items-end p-4 relative overflow-hidden">
-                      {/* Decorative park elements */}
-                      <div className="absolute top-4 right-4 h-16 w-16 rounded-full bg-accent/20" />
-                      <div className="absolute top-2 right-14 h-10 w-10 rounded-full bg-primary/15" />
-                      <div className="absolute bottom-6 left-3 h-12 w-8 rounded-t-full bg-accent/25" />
-                      <div className="absolute bottom-6 left-10 h-16 w-8 rounded-t-full bg-primary/20" />
-                      <div className="absolute bottom-6 left-16 h-10 w-8 rounded-t-full bg-accent/30" />
-                      <span className="relative text-[10px] font-medium text-foreground/70 bg-background/60 backdrop-blur-sm rounded-full px-2 py-0.5">
-                        📍 Prospect Park
+                    {/* Prospect Park photo */}
+                    <div className="mx-4 h-32 rounded-xl overflow-hidden relative">
+                      <img
+                        src={prospectParkImg}
+                        alt="Prospect Park Boathouse"
+                        className="h-full w-full object-cover"
+                      />
+                      <span className="absolute bottom-2 left-2 text-[9px] font-medium text-white bg-foreground/50 backdrop-blur-sm rounded-full px-2 py-0.5">
+                        Prospect Park
                       </span>
                     </div>
 
-                    {/* Detail content */}
-                    <div className="px-5 pt-4">
+                    <div className="px-4 pt-3">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[10px] font-medium text-accent uppercase tracking-wider">
+                        <span className="text-[9px] font-medium text-accent uppercase tracking-wider">
                           {detailView.category}
                         </span>
-                        <span className="text-[9px] text-primary font-medium">This Saturday</span>
+                        <span className="text-[8px] text-primary font-medium">This Saturday</span>
                       </div>
-                      <h4 className="font-serif text-base font-bold text-foreground leading-tight">
+                      <h4 className="font-serif text-sm font-bold text-foreground leading-tight">
                         {detailView.title}
                       </h4>
-                      <p className="mt-2 text-[11px] text-secondary leading-relaxed">
+                      <p className="mt-1.5 text-[10px] text-secondary leading-relaxed">
                         {detailView.description}
                       </p>
 
-                      {/* Info row */}
-                      <div className="mt-3 flex gap-3">
-                        <div className="rounded-lg bg-muted px-2.5 py-1.5">
-                          <p className="text-[9px] text-secondary">When</p>
-                          <p className="text-[10px] font-medium text-foreground">Sat 9:30 AM</p>
+                      <div className="mt-2.5 flex gap-2">
+                        <div className="rounded-lg bg-muted px-2 py-1">
+                          <p className="text-[8px] text-secondary">When</p>
+                          <p className="text-[9px] font-medium text-foreground">Sat 9:30 AM</p>
                         </div>
-                        <div className="rounded-lg bg-muted px-2.5 py-1.5">
-                          <p className="text-[9px] text-secondary">Price</p>
-                          <p className="text-[10px] font-medium text-foreground">Free</p>
+                        <div className="rounded-lg bg-muted px-2 py-1">
+                          <p className="text-[8px] text-secondary">Price</p>
+                          <p className="text-[9px] font-medium text-foreground">Free</p>
                         </div>
-                        <div className="rounded-lg bg-muted px-2.5 py-1.5">
-                          <p className="text-[9px] text-secondary">Distance</p>
-                          <p className="text-[10px] font-medium text-foreground">12 min</p>
+                        <div className="rounded-lg bg-muted px-2 py-1">
+                          <p className="text-[8px] text-secondary">Distance</p>
+                          <p className="text-[9px] font-medium text-foreground">12 min</p>
                         </div>
                       </div>
 
-                      {/* Tags */}
-                      <div className="mt-3 flex flex-wrap gap-1.5">
+                      <div className="mt-2.5 flex flex-wrap gap-1">
                         {detailView.tags.map((tag) => (
-                          <span key={tag} className="rounded-full border border-border px-2 py-0.5 text-[9px] text-secondary">
+                          <span key={tag} className="rounded-full border border-border px-1.5 py-0.5 text-[8px] text-secondary">
                             {tag}
                           </span>
                         ))}
                       </div>
 
-                      {/* CTA */}
-                      <button className="mt-4 w-full rounded-xl bg-primary py-2.5 text-[12px] font-medium text-primary-foreground">
+                      <button className="mt-3 w-full rounded-xl bg-primary py-2 text-[11px] font-medium text-primary-foreground">
                         Save to my weekend
                       </button>
                     </div>
@@ -256,15 +245,15 @@ const HowItWorks = () => {
                 </div>
 
                 {/* Bottom bar */}
-                <div className="border-t border-border px-8 py-3 flex justify-around">
-                  <div className="h-1 w-8 rounded-full bg-primary" />
-                  <div className="h-1 w-8 rounded-full bg-border" />
-                  <div className="h-1 w-8 rounded-full bg-border" />
+                <div className="border-t border-border px-6 py-2 flex justify-around">
+                  <div className="h-0.5 w-6 rounded-full bg-primary" />
+                  <div className="h-0.5 w-6 rounded-full bg-border" />
+                  <div className="h-0.5 w-6 rounded-full bg-border" />
                 </div>
 
                 {/* Home indicator */}
-                <div className="flex justify-center pb-2">
-                  <div className="h-1 w-24 rounded-full bg-foreground/20" />
+                <div className="flex justify-center pb-1.5">
+                  <div className="h-1 w-20 rounded-full bg-foreground/20" />
                 </div>
               </div>
             </div>
