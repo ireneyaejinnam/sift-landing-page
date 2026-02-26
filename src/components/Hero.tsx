@@ -4,7 +4,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="flex min-h-[85vh] items-center justify-center px-6 pt-24 pb-16">
+    <section className="flex min-h-screen items-center justify-center px-6 pt-32 pb-24">
       <div className="mx-auto max-w-[720px] text-center">
         <h1 className="fade-up font-serif text-3xl font-bold leading-tight tracking-tight text-foreground md:text-[2.75rem] md:leading-[1.2]">
           Stop scrolling six apps just to figure out what to do this weekend.
