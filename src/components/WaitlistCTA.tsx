@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getUTMParams } from "@/hooks/use-scroll";
 import { trackEvent } from "@/lib/analytics";
+import { supabase } from "@/integrations/supabase/client";
 
 const categories = [
   "Live music",
@@ -18,6 +19,8 @@ const WaitlistCTA = () => {
   const [selected, setSelected] = useState<string[]>([]);
   const [utmParams, setUtmParams] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     setUtmParams(getUTMParams());
@@ -31,11 +34,36 @@ const WaitlistCTA = () => {
     );
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+
     trackEvent("waitlist_submit", { categories: selected.join(","), ...utmParams });
-    console.log("Waitlist signup:", { email, categories: selected, ...utmParams });
-    setSubmitted(true);
+
+    try {
+      const { data, error: fnError } = await supabase.functions.invoke("submit-waitlist", {
+        body: {
+          email,
+          categories: selected,
+          utm_source: utmParams.utm_source || null,
+          utm_medium: utmParams.utm_medium || null,
+          utm_campaign: utmParams.utm_campaign || null,
+        },
+      });
+
+      if (fnError) throw fnError;
+
+      const result = typeof data === "string" ? JSON.parse(data) : data;
+      if (result?.error) throw new Error(result.error);
+
+      setSubmitted(true);
+    } catch (err: any) {
+      console.error("Waitlist error:", err);
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -55,11 +83,6 @@ const WaitlistCTA = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="fade-up fade-up-delay-2 mt-10">
-            {Object.entries(utmParams).map(([key, value]) => (
-              <input key={key} type="hidden" name={key} value={value} />
-            ))}
-            <input type="hidden" name="categories" value={selected.join(",")} />
-
             <div className="flex gap-3">
               <input
                 type="email"
@@ -71,11 +94,16 @@ const WaitlistCTA = () => {
               />
               <button
                 type="submit"
-                className="rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                disabled={loading}
+                className="rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50"
               >
-                Join the Waitlist
+                {loading ? "Joining..." : "Join the Waitlist"}
               </button>
             </div>
+
+            {error && (
+              <p className="mt-3 text-sm text-destructive">{error}</p>
+            )}
 
             <div className="mt-8">
               <p className="text-xs font-medium text-secondary">
