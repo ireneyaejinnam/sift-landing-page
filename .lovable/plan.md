@@ -1,24 +1,22 @@
 
 
-## Analytics Backend Setup
+## Assessment: Raw HTTP API vs PostHog SDK Snippet
 
-You have two main options for receiving and storing analytics events:
+**The raw HTTP API approach (already implemented) is the better choice for this project.** Here's why:
 
-### Option 1: Lovable Cloud (Recommended)
-Lovable Cloud lets you spin up a Supabase backend directly from this project — no external accounts needed. You'd get:
-- **Edge Function** to receive analytics events via HTTP
-- **Database table** to store events (timestamp, event name, properties, referrer, etc.)
-- **Dashboard-ready data** you can query or visualize later
+### Raw HTTP API (current) wins because:
+- **Zero dependencies** — no extra JS bundle weight on a landing page where performance matters
+- **Already working** — `navigator.sendBeacon` is fire-and-forget, non-blocking, and survives page unloads
+- **Sufficient for your use case** — you're tracking ~7 specific manual events, not using autocapture, session replay, or feature flags
+- **Simpler** — 36 lines of code vs loading a full SDK
 
-The flow would be:
-1. Enable Lovable Cloud from the Cloud tab
-2. Create a `page_events` database table (columns: id, event, properties, url, referrer, timestamp)
-3. Create an `track-event` edge function that accepts POST requests and inserts rows
-4. Update `src/lib/analytics.ts` to call the edge function instead of just logging to console
+### The HTML snippet would give you:
+- Autocapture (clicks, pageviews automatically) — you don't need this since you're tracking specific events
+- Session replay, feature flags, surveys — not relevant for a pre-launch landing page
+- Better batching/retry — marginal benefit for low-traffic waitlist page
 
-### Option 2: External Analytics Service
-If you'd rather use a third-party service (Mixpanel, PostHog, Amplitude, Google Analytics), you'd just swap the `sendBeacon` endpoint URL. No backend needed on your side — just a client-side SDK or API key.
+### Recommendation
+**No changes needed.** The current `src/lib/analytics.ts` using the raw HTTP API is already the right approach. All 7 events (hero CTA, navbar CTA, waitlist submit, category select/deselect, FAQ open, scroll depth) are firing to PostHog's US endpoint via `sendBeacon`.
 
-### My Recommendation
-**Lovable Cloud** is the simplest path since everything stays in one place. Want me to set it up? You'd just need to enable Cloud from the Cloud tab first, then I can create the edge function and database table.
+If you later need autocapture or session replay post-launch, switching to the SDK at that point would make sense.
 
