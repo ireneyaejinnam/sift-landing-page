@@ -25,7 +25,7 @@ const recommendations = [
   {
     category: "Arts",
     title: "Happy Medium — Art Cafe & Pottery Studio",
-    details: "happy-medium.co · Classes available · Brooklyn",
+    details: "Classes available · Brooklyn",
     time: "Open daily 10am–9pm",
     badge: "Walk-ins welcome",
     accentClass: "bg-primary",
@@ -35,7 +35,7 @@ const recommendations = [
   {
     category: "Nature · Arts",
     title: "The Orchid Show: Concrete Jungle",
-    details: "NYBG · Bronx · Timed entry",
+    details: "Timed entry · Bronx",
     time: "Sat–Sun 10am–6pm",
     badge: "Ends Apr 6",
     accentClass: "bg-accent",
@@ -45,7 +45,7 @@ const recommendations = [
   {
     category: "Shopping",
     title: "Stuart Weitzman & Carlisle Sample Sale",
-    details: "15 E 37th St · Mar 3–9 · Midtown South",
+    details: "Mar 3–9 · Midtown South",
     time: "Tues–Fri 10am–6pm",
     badge: "This week",
     accentClass: "bg-primary",
