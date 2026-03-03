@@ -1,22 +1,23 @@
 
 
-## Assessment: Raw HTTP API vs PostHog SDK Snippet
+## Fix: Waitlist confirmation message invisible after submission
 
-**The raw HTTP API approach (already implemented) is the better choice for this project.** Here's why:
+### Problem
+The waitlist form **is working correctly** — emails are being saved to the database (I verified 2 test entries). The issue is a **UI bug**: after successful submission, the "You're on the list" confirmation message is invisible.
 
-### Raw HTTP API (current) wins because:
-- **Zero dependencies** — no extra JS bundle weight on a landing page where performance matters
-- **Already working** — `navigator.sendBeacon` is fire-and-forget, non-blocking, and survives page unloads
-- **Sufficient for your use case** — you're tracking ~7 specific manual events, not using autocapture, session replay, or feature flags
-- **Simpler** — 36 lines of code vs loading a full SDK
+The confirmation `<div>` has the `fade-up` CSS class, which starts elements at `opacity: 0` and `translateY`. The `IntersectionObserver` in `useScrollReveal()` adds a `visible` class to trigger the animation. But the observer only scans for `.fade-up` elements on initial mount — when the confirmation div renders dynamically after submission, the observer never sees it, so it stays invisible.
 
-### The HTML snippet would give you:
-- Autocapture (clicks, pageviews automatically) — you don't need this since you're tracking specific events
-- Session replay, feature flags, surveys — not relevant for a pre-launch landing page
-- Better batching/retry — marginal benefit for low-traffic waitlist page
+### Fix
+Remove the `fade-up` class from the confirmation message div in `WaitlistCTA.tsx` (line ~79). The confirmation should appear immediately without a scroll-reveal animation.
 
-### Recommendation
-**No changes needed.** The current `src/lib/analytics.ts` using the raw HTTP API is already the right approach. All 7 events (hero CTA, navbar CTA, waitlist submit, category select/deselect, FAQ open, scroll depth) are firing to PostHog's US endpoint via `sendBeacon`.
+Change:
+```tsx
+<div className="fade-up mt-10 rounded-lg border border-border bg-card p-8">
+```
+To:
+```tsx
+<div className="mt-10 rounded-lg border border-border bg-card p-8">
+```
 
-If you later need autocapture or session replay post-launch, switching to the SDK at that point would make sense.
+This is a one-line fix. The database integration is fully operational — no backend changes needed.
 
