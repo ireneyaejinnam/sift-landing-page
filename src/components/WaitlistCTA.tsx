@@ -77,7 +77,7 @@ const WaitlistCTA = () => {
         </p>
 
         {submitted ? (
-          <div className="fade-up mt-10 rounded-lg border border-border bg-card p-8">
+          <div className="mt-10 rounded-lg border border-border bg-card p-8">
             <p className="font-serif text-lg font-bold text-foreground">You're on the list.</p>
             <p className="mt-2 text-sm text-secondary">We'll be in touch when early access opens.</p>
           </div>
