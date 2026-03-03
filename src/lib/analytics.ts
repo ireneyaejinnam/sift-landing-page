@@ -1,3 +1,10 @@
+import posthog from 'posthog-js';
+
+posthog.init('phc_LRnZeqxgcDNDAnrXSVJV6wfiVBXGQDGef0mW1JF8WKF', {
+  api_host: 'https://app.posthog.com',
+  capture_pageview: false,
+});
+
 type EventName =
   | "hero_cta_click"
   | "navbar_cta_click"
@@ -10,16 +17,9 @@ type EventName =
 type EventProperties = Record<string, string | number | boolean>;
 
 export function trackEvent(event: EventName, properties?: EventProperties) {
-  const payload = {
-    event,
-    timestamp: new Date().toISOString(),
+  posthog.capture(event, {
     url: window.location.href,
     referrer: document.referrer,
     ...properties,
-  };
-
-  console.log(`[Analytics] ${event}`, payload);
-
-  // Future: send to your analytics endpoint
-  // navigator.sendBeacon("/api/track", JSON.stringify(payload));
+  });
 }
