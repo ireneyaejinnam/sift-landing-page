@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { getUTMParams } from "@/hooks/use-scroll";
+import { trackEvent } from "@/lib/analytics";
 
 const categories = [
   "Live music",
@@ -23,13 +24,16 @@ const WaitlistCTA = () => {
   }, []);
 
   const toggleCategory = (cat: string) => {
+    const isSelected = selected.includes(cat);
+    trackEvent(isSelected ? "category_deselect" : "category_select", { category: cat });
     setSelected((prev) =>
-      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
+      isSelected ? prev.filter((c) => c !== cat) : [...prev, cat]
     );
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    trackEvent("waitlist_submit", { categories: selected.join(","), ...utmParams });
     console.log("Waitlist signup:", { email, categories: selected, ...utmParams });
     setSubmitted(true);
   };

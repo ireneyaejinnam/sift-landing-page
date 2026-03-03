@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 export function useScrollReveal() {
   const ref = useRef<HTMLDivElement>(null);
@@ -40,6 +41,7 @@ export function useScrollDepthTracking() {
     [25, 50, 75, 100].forEach((milestone) => {
       if (pct >= milestone && !fired.current.has(milestone)) {
         fired.current.add(milestone);
+        trackEvent("scroll_depth", { milestone });
         console.log(`Scroll depth: ${milestone}%`);
       }
     });
