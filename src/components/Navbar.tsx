@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { trackEvent } from "@/lib/analytics";
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -10,6 +11,7 @@ const Navbar = () => {
   }, []);
 
   const scrollToWaitlist = () => {
+    trackEvent("navbar_cta_click");
     document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
   };
 

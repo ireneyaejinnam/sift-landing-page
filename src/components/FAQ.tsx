@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { trackEvent } from "@/lib/analytics";
 
 const faqs = [
   {
@@ -40,7 +41,12 @@ const FAQ = () => {
           Common questions
         </h2>
 
-        <Accordion type="single" collapsible className="mt-8">
+        <Accordion type="single" collapsible className="mt-8" onValueChange={(value) => {
+          if (value) {
+            const index = parseInt(value.replace("faq-", ""));
+            trackEvent("faq_open", { question: faqs[index].q });
+          }
+        }}>
           {faqs.map((faq, i) => (
             <AccordionItem key={i} value={`faq-${i}`} className="fade-up border-border">
               <AccordionTrigger className="text-left font-sans text-sm font-medium text-foreground hover:no-underline md:text-base">

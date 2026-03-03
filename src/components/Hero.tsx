@@ -1,5 +1,8 @@
+import { trackEvent } from "@/lib/analytics";
+
 const Hero = () => {
   const scrollToWaitlist = () => {
+    trackEvent("hero_cta_click");
     document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
   };
 
