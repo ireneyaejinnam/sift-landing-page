@@ -1,9 +1,5 @@
-import posthog from 'posthog-js';
-
-posthog.init('phc_LRnZeqxgcDNDAnrXSVJV6wfiVBXGQDGef0mW1JF8WKF', {
-  api_host: 'https://app.posthog.com',
-  capture_pageview: false,
-});
+const POSTHOG_API_KEY = 'phc_LRnZeqxgcDNDAnrXSVJV6wfiVBXGQDGef0mW1JF8WKF';
+const POSTHOG_ENDPOINT = 'https://us.i.posthog.com/capture/';
 
 type EventName =
   | "hero_cta_click"
@@ -16,10 +12,24 @@ type EventName =
 
 type EventProperties = Record<string, string | number | boolean>;
 
+let distinctId = localStorage.getItem('ph_distinct_id');
+if (!distinctId) {
+  distinctId = crypto.randomUUID();
+  localStorage.setItem('ph_distinct_id', distinctId);
+}
+
 export function trackEvent(event: EventName, properties?: EventProperties) {
-  posthog.capture(event, {
-    url: window.location.href,
-    referrer: document.referrer,
-    ...properties,
-  });
+  const payload = {
+    api_key: POSTHOG_API_KEY,
+    event,
+    properties: {
+      distinct_id: distinctId,
+      url: window.location.href,
+      referrer: document.referrer,
+      ...properties,
+    },
+    timestamp: new Date().toISOString(),
+  };
+
+  navigator.sendBeacon(POSTHOG_ENDPOINT, JSON.stringify(payload));
 }
