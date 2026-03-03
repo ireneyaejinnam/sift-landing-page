@@ -25,7 +25,7 @@ const recommendations = [
   {
     category: "Arts",
     title: "Happy Medium — Art Cafe & Pottery Studio",
-    details: "happy-medium.co · Classes available · NYC",
+    details: "happy-medium.co · Classes available · Brooklyn",
     time: "Open daily 10am–9pm",
     badge: "Walk-ins welcome",
     accentClass: "bg-primary",
@@ -45,7 +45,7 @@ const recommendations = [
   {
     category: "Shopping",
     title: "Stuart Weitzman & Carlisle Sample Sale",
-    details: "15 E 37th St · Mar 3–9 · NYC",
+    details: "15 E 37th St · Mar 3–9 · Midtown South",
     time: "Tues–Fri 10am–6pm",
     badge: "This week",
     accentClass: "bg-primary",
@@ -58,7 +58,7 @@ const detailViews = [
   {
     title: "Happy Medium — Art Cafe & Pottery Studio",
     category: "Arts",
-    location: "NYC",
+    location: "Brooklyn",
     date: "Open daily · 10 AM–9 PM",
     price: "From $35",
     distance: "20 min from you",
@@ -82,7 +82,7 @@ const detailViews = [
   {
     title: "Stuart Weitzman & Carlisle Sample Sale",
     category: "Shopping",
-    location: "15 E 37th St, NYC",
+    location: "Midtown South",
     date: "Mar 3–9 · Tues–Fri 10–6, Mon 10–4",
     price: "Up to 80% off",
     distance: "15 min from you",
@@ -248,9 +248,6 @@ const HowItWorks = () => {
                       />
                       <span className="absolute bottom-2 left-2 text-[9px] font-medium text-white bg-foreground/50 backdrop-blur-sm rounded-full px-2 py-0.5">
                         {currentDetail.location}
-                      </span>
-                      <span className="absolute bottom-1.5 right-1.5 text-[6px] text-white/60">
-                        {currentDetail.source}
                       </span>
                     </div>
 
