@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import prospectParkImg from "@/assets/prospect-park.png";
+import happyMediumImg from "@/assets/happy-medium.webp";
+import orchidShowImg from "@/assets/orchid-show.webp";
+import stuartWeitzmanImg from "@/assets/stuart-weitzman-sale.webp";
 
 const steps = [
   {
@@ -21,65 +23,114 @@ const steps = [
 
 const recommendations = [
   {
-    category: "Art",
-    title: "Kehinde Wiley: New Portraits",
-    details: "Sean Kelly Gallery · Free · Chelsea",
-    time: "Sat 11am–6pm",
-    badge: "Ends in 17 days",
+    category: "Arts",
+    title: "Happy Medium — Art Cafe & Pottery Studio",
+    details: "happy-medium.co · Classes available · NYC",
+    time: "Open daily 10am–9pm",
+    badge: "Walk-ins welcome",
     accentClass: "bg-primary",
+    image: happyMediumImg,
+    source: "Yelp",
   },
   {
-    category: "Outdoors",
-    title: "Spring Foraging Walk",
-    details: "Prospect Park · Free · Brooklyn",
-    time: "Sat 9:30am",
-    badge: "This Saturday",
+    category: "Nature · Arts",
+    title: "The Orchid Show: Concrete Jungle",
+    details: "NYBG · Bronx · Timed entry",
+    time: "Sat–Sun 10am–6pm",
+    badge: "Ends Apr 6",
     accentClass: "bg-accent",
+    image: orchidShowImg,
+    source: "NYBG",
   },
   {
-    category: "Comedy",
-    title: "Late-Night Comedy Lottery",
-    details: "Eastville Comedy Club · $10 · East Village",
-    time: "Fri 10:30pm",
-    badge: null,
+    category: "Shopping",
+    title: "Stuart Weitzman & Carlisle Sample Sale",
+    details: "15 E 37th St · Mar 3–9 · NYC",
+    time: "Tues–Fri 10am–6pm",
+    badge: "This week",
     accentClass: "bg-primary",
+    image: stuartWeitzmanImg,
+    source: "Instagram",
   },
 ];
 
-const detailView = {
-  title: "Spring Foraging Walk",
-  category: "Outdoors",
-  location: "Prospect Park, Brooklyn",
-  date: "Saturday, Mar 8 · 9:30 AM",
-  price: "Free",
-  distance: "12 min from you",
-  description: "Join a guided walk through Prospect Park to discover edible plants, mushrooms, and herbs. All experience levels welcome.",
-  tags: ["Family-friendly", "Rain or shine", "Bring a bag"],
-};
+const detailViews = [
+  {
+    title: "Happy Medium — Art Cafe & Pottery Studio",
+    category: "Arts",
+    location: "NYC",
+    date: "Open daily · 10 AM–9 PM",
+    price: "From $35",
+    distance: "20 min from you",
+    description: "Drop into this cozy art cafe for a pottery class or just grab a coffee surrounded by paintings and creative energy. Classes available for all skill levels.",
+    tags: ["Walk-ins welcome", "All levels", "BYOB"],
+    image: happyMediumImg,
+    source: "Yelp",
+  },
+  {
+    title: "The Orchid Show: Concrete Jungle",
+    category: "Nature · Arts",
+    location: "NYBG, Bronx",
+    date: "Through Apr 6 · Timed entry",
+    price: "$30",
+    distance: "45 min from you",
+    description: "The annual Orchid Show is back — featuring Mr. Flower Fantastic's \"Concrete Jungle\" installation. Thousands of orchids in a stunning immersive experience.",
+    tags: ["Timed entry", "Photography welcome", "Gift shop"],
+    image: orchidShowImg,
+    source: "NYBG",
+  },
+  {
+    title: "Stuart Weitzman & Carlisle Sample Sale",
+    category: "Shopping",
+    location: "15 E 37th St, NYC",
+    date: "Mar 3–9 · Tues–Fri 10–6, Mon 10–4",
+    price: "Up to 80% off",
+    distance: "15 min from you",
+    description: "Steeply discounted Stuart Weitzman boots, booties, and sandals plus Carlisle luxury apparel. Hosted by WeFashion.",
+    tags: ["Cash & card", "Limited time", "No returns"],
+    image: stuartWeitzmanImg,
+    source: "Instagram",
+  },
+];
 
 type MockupView = "list" | "tapping" | "detail";
 
 const HowItWorks = () => {
   const [view, setView] = useState<MockupView>("list");
+  const [activeCard, setActiveCard] = useState(0);
 
   const runAnimation = useCallback(() => {
-    setView("list");
-    const t1 = setTimeout(() => setView("tapping"), 2400);
-    const t2 = setTimeout(() => setView("detail"), 2900);
-    const t3 = setTimeout(() => setView("list"), 6900);
-    return [t1, t2, t3];
+    // Card 0: list → tap → detail → list
+    // Card 1: list → tap → detail → list
+    // Card 2: list → tap → detail → list
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const cycleDuration = 4500;
+
+    for (let i = 0; i < 3; i++) {
+      const offset = i * cycleDuration;
+      timers.push(setTimeout(() => { setActiveCard(i); setView("list"); }, offset));
+      timers.push(setTimeout(() => { setView("tapping"); }, offset + 1800));
+      timers.push(setTimeout(() => { setView("detail"); }, offset + 2300));
+    }
+    // Return to list after last detail
+    timers.push(setTimeout(() => { setView("list"); setActiveCard(0); }, 3 * cycleDuration - 500));
+
+    return timers;
   }, []);
 
   useEffect(() => {
     let timers = runAnimation();
+    const totalDuration = 3 * 4500;
     const interval = setInterval(() => {
       timers = runAnimation();
-    }, 7400);
+    }, totalDuration);
     return () => {
       timers.forEach(clearTimeout);
       clearInterval(interval);
     };
   }, [runAnimation]);
+
+  const currentDetail = detailViews[activeCard];
 
   return (
     <section className="px-6 py-24 md:py-32">
@@ -104,7 +155,7 @@ const HowItWorks = () => {
             ))}
           </div>
 
-          {/* iPhone mockup — 19.5:9 aspect ratio */}
+          {/* iPhone mockup */}
           <div className="fade-up fade-up-delay-2 w-[240px] shrink-0">
             <div className="rounded-[2.5rem] bg-foreground p-[8px] shadow-2xl shadow-foreground/20">
               <div className="relative rounded-[2rem] bg-background overflow-hidden">
@@ -147,8 +198,8 @@ const HowItWorks = () => {
                           key={rec.title}
                           className="flex gap-2.5 rounded-xl border border-border bg-card p-3 transition-all duration-200"
                           style={{
-                            transform: view === "tapping" && i === 1 ? "scale(0.97)" : "scale(1)",
-                            boxShadow: view === "tapping" && i === 1 ? "0 0 0 2px hsl(var(--primary) / 0.3)" : "none",
+                            transform: view === "tapping" && i === activeCard ? "scale(0.97)" : "scale(1)",
+                            boxShadow: view === "tapping" && i === activeCard ? "0 0 0 2px hsl(var(--primary) / 0.3)" : "none",
                           }}
                         >
                           <div className={`mt-1 h-1.5 w-1.5 shrink-0 rounded-full ${rec.accentClass}`} />
@@ -188,49 +239,51 @@ const HowItWorks = () => {
                       <span className="font-serif italic text-base text-foreground">Sift</span>
                     </div>
 
-                    {/* Prospect Park photo */}
+                    {/* Event photo */}
                     <div className="mx-4 h-32 rounded-xl overflow-hidden relative">
                       <img
-                        src={prospectParkImg}
-                        alt="Prospect Park Boathouse"
+                        src={currentDetail.image}
+                        alt={currentDetail.title}
                         className="h-full w-full object-cover"
                       />
                       <span className="absolute bottom-2 left-2 text-[9px] font-medium text-white bg-foreground/50 backdrop-blur-sm rounded-full px-2 py-0.5">
-                        Prospect Park
+                        {currentDetail.location}
+                      </span>
+                      <span className="absolute bottom-1.5 right-1.5 text-[6px] text-white/60">
+                        {currentDetail.source}
                       </span>
                     </div>
 
                     <div className="px-4 pt-3">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="text-[9px] font-medium text-accent uppercase tracking-wider">
-                          {detailView.category}
+                          {currentDetail.category}
                         </span>
-                        <span className="text-[8px] text-primary font-medium">This Saturday</span>
                       </div>
                       <h4 className="font-serif text-sm font-bold text-foreground leading-tight">
-                        {detailView.title}
+                        {currentDetail.title}
                       </h4>
                       <p className="mt-1.5 text-[10px] text-secondary leading-relaxed">
-                        {detailView.description}
+                        {currentDetail.description}
                       </p>
 
                       <div className="mt-2.5 flex gap-2">
                         <div className="rounded-lg bg-muted px-2 py-1">
                           <p className="text-[8px] text-secondary">When</p>
-                          <p className="text-[9px] font-medium text-foreground">Sat 9:30 AM</p>
+                          <p className="text-[9px] font-medium text-foreground">{currentDetail.date.split("·")[0].trim()}</p>
                         </div>
                         <div className="rounded-lg bg-muted px-2 py-1">
                           <p className="text-[8px] text-secondary">Price</p>
-                          <p className="text-[9px] font-medium text-foreground">Free</p>
+                          <p className="text-[9px] font-medium text-foreground">{currentDetail.price}</p>
                         </div>
                         <div className="rounded-lg bg-muted px-2 py-1">
                           <p className="text-[8px] text-secondary">Distance</p>
-                          <p className="text-[9px] font-medium text-foreground">12 min</p>
+                          <p className="text-[9px] font-medium text-foreground">{currentDetail.distance}</p>
                         </div>
                       </div>
 
                       <div className="mt-2.5 flex flex-wrap gap-1">
-                        {detailView.tags.map((tag) => (
+                        {currentDetail.tags.map((tag) => (
                           <span key={tag} className="rounded-full border border-border px-1.5 py-0.5 text-[8px] text-secondary">
                             {tag}
                           </span>
@@ -243,7 +296,6 @@ const HowItWorks = () => {
                     </div>
                   </div>
                 </div>
-
 
                 {/* Home indicator */}
                 <div className="flex justify-center pb-1.5">
