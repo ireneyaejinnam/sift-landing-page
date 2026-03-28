@@ -14,7 +14,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      waitlist_signups: {
+      "waitlist-signup": {
         Row: {
           categories: string[] | null
           created_at: string
