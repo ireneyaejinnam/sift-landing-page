@@ -58,7 +58,7 @@ Deno.serve(async (req) => {
     if (error) {
       console.error("DB error:", error);
       return new Response(
-        JSON.stringify({ error: "Failed to save signup" }),
+        JSON.stringify({ error: "Failed to save signup", detail: error.message, code: error.code }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
