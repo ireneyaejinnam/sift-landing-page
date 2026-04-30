@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "7SJU728J3A.com.siftnyc.app",
+        "paths": ["/event/*"]
+      }
+    ]
+  }
+}
