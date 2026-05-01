@@ -85,14 +85,16 @@ const EventPage = () => {
             Event not found
           </h1>
           <p className="mb-6 text-muted-foreground">
-            This event may have expired or been removed.
+            This event may have expired, been removed, or isn't publicly available yet.
           </p>
-          <Link
-            to="/"
-            className="rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Back to Sift
-          </Link>
+          <div className="flex flex-col gap-3 items-center">
+            <Link
+              to="/"
+              className="rounded-lg bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            >
+              Discover events on Sift
+            </Link>
+          </div>
         </div>
         <Footer />
       </div>
