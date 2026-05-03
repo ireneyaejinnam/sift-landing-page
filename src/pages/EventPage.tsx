@@ -16,7 +16,6 @@ interface EventData {
   borough: string | null;
   price_min: number | null;
   price_max: number | null;
-  price_label: string | null;
   category: string | null;
   ticket_url: string | null;
   event_url: string | null;
@@ -33,7 +32,6 @@ function formatDate(dateStr: string) {
 }
 
 function formatPrice(event: EventData) {
-  if (event.price_label) return event.price_label;
   if (event.price_min === 0 && (!event.price_max || event.price_max === 0))
     return "Free";
   if (event.price_min != null && event.price_max != null && event.price_max > event.price_min)
@@ -55,7 +53,7 @@ const EventPage = () => {
         const { data, error } = await (supabase as any)
           .from("events")
           .select(
-            "id, title, description, image_url, start_date, end_date, venue_name, address, borough, price_min, price_max, price_label, category, ticket_url, event_url"
+            "id, title, description, image_url, start_date, end_date, venue_name, address, borough, price_min, price_max, category, ticket_url, event_url"
           )
           .eq("id", id)
           .maybeSingle();
