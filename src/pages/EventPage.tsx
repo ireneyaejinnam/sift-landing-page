@@ -50,18 +50,33 @@ const EventPage = () => {
 
   useEffect(() => {
     if (!id) return;
-    (supabase as any)
-      .from("events")
-      .select(
-        "id, title, description, image_url, start_date, end_date, venue_name, address, borough, price_min, price_max, price_label, category, ticket_url, event_url"
-      )
-      .eq("id", id)
-      .maybeSingle()
-      .then(({ data, error }: { data: EventData | null; error: any }) => {
-        if (error || !data) setNotFound(true);
-        else setEvent(data);
+    const fetchEvent = async (retries = 2) => {
+      try {
+        const { data, error } = await (supabase as any)
+          .from("events")
+          .select(
+            "id, title, description, image_url, start_date, end_date, venue_name, address, borough, price_min, price_max, price_label, category, ticket_url, event_url"
+          )
+          .eq("id", id)
+          .maybeSingle();
+        if (error) {
+          console.error("[EventPage] Supabase error:", error.message);
+          if (retries > 0) return fetchEvent(retries - 1);
+          setNotFound(true);
+        } else if (!data) {
+          setNotFound(true);
+        } else {
+          setEvent(data);
+        }
+      } catch (err) {
+        console.error("[EventPage] Fetch failed:", err);
+        if (retries > 0) return fetchEvent(retries - 1);
+        setNotFound(true);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+    fetchEvent();
   }, [id]);
 
   useEffect(() => {
