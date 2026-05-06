@@ -183,7 +183,7 @@ const EventPage = () => {
           </p>
           <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <a
-              href="https://apps.apple.com/app/TODO_APP_STORE_ID"
+              href="https://apps.apple.com/app/6761741207"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex w-48 items-center justify-center rounded-lg bg-foreground px-6 py-3 text-sm font-medium text-background transition-colors hover:bg-foreground/90"
